@@ -1,3 +1,5 @@
+import { makePlayerBoard } from "./dom";
+
 export const shipFactory = (size, hp, sunk) => {
 
     const takeDamage = () => {
@@ -30,6 +32,7 @@ export class Gameboard {
         this.player = player
         // this.mainGameboard = Array(10).fill(Array(10).fill(null));
         this.gameBoard = [];
+        this.shipList = [];
     }
     
     makeGameBoard(size){
@@ -39,9 +42,12 @@ export class Gameboard {
             grid[i] = new Array(size);
         }
         
+        let counter = 0;
+
         for(let i = 0; i < size; i++){
             for(let j = 0; j < size; j++){
-                grid[i][j] = "empty"
+                grid[i][j] = counter;
+                counter++
             }
         }
 
@@ -58,12 +64,45 @@ export class Gameboard {
                 this.gameBoard[coordX][coordY + i] = shipName
             }  
         }
+        this.shipList.push([coordX, coordY]);
     }
 
     receiveAttack(coordX, coordY){
-        if(this.gameBoard[coordX][coordY] != "empty"){
-            this.gameBoard[coordX][coordY].takeDamage();
+        const coords = this.gameBoard[coordX][coordY]
+        if(typeof coords === "object"){
+            coords.takeDamage();
+            coords = "t";
+        } else if (typeof coords === "number"){
+            coords = "x"
+        } else{
+            console.log("You've already attacked here!");
         }
     }
 
+    isGameOver(){
+        let totalBoardHP = 0;
+        // this.shipList.forEach((i) => {
+        //     totalBoardHP += this.gameBoard[i[0]][i[1]].getHP();
+        // })
+        this.gameBoard.forEach(i => {
+            i.forEach(j => {
+                if(typeof j === "object"){
+                    totalBoardHP += 1;
+                }
+            })
+        })
+        if(totalBoardHP === 0){
+            console.log("GG!")
+        }else {
+            return
+        }
+    }
+
+    render(object){
+        makePlayerBoard(object);
+    }
 }
+
+
+
+
