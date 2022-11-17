@@ -1,13 +1,43 @@
 import { shipFactory, Gameboard } from "./game";
-import { clearDom } from "./dom";
+import { clearDom, clearDomAll, addClickEvent, gameStartScreen, makeStatusPlate } from "./dom";
 
 export const gameLoop = {
-    turn: 1,
+    turn: 1, counter: 0,
 
     gameLoop(player1, comp){
-        //clearDom();
+        if(this.getTurn() === 1){
+            this.playerTurn(player1, comp)
+        }else {
+            this.computerTurn(player1, comp)
+        }
+    },
+
+    playerTurn(player1, comp){
+        clearDomAll();
+        player1.render(player1);
+        console.log(player1, comp)
+        comp.render(comp);
+        makeStatusPlate("Player's turn!")
+        addClickEvent(player1, comp);//add click event to comp's board for making attacks
+    },
+
+    computerTurn(player1, comp){
+        clearDomAll();
         player1.render(player1);
         comp.render(comp);
+        player1.isGameOver();
+        makeStatusPlate("Computer is taking aim...")
+        setTimeout(() => {
+            comp.randomAttack(player1);
+            // this.setTurn(1);
+            // this.gameLoop();
+            this.playerTurn(player1, comp)
+        }, 1500);
+        
+    },
+
+    incrementCounter() {
+        return this.counter++
     },
 
     updateStatus() {
@@ -19,28 +49,47 @@ export const gameLoop = {
         const ai = new Gameboard(`${comp}`);
         human.makeGameBoard(10);
         ai.makeGameBoard(10);
-        console.log(human, ai)
+        human.initPlayerFleet();
+        ai.initPlayerFleet();
+        ai.randomShipPlacement(ai, ai.fleet[0])
+        ai.randomShipPlacement(ai, ai.fleet[1])
+        ai.randomShipPlacement(ai, ai.fleet[2])
+        ai.randomShipPlacement(ai, ai.fleet[3])
+        ai.randomShipPlacement(ai, ai.fleet[4])
+        // ai.fleet.forEach(i => {
+        //     ai.randomShipPlacement(ai, i)
+        // });
         this.placeShips(human, ai);
     },
 
     placeShips(player1, comp){
-        //mock ship placement
-        const player1Cruiser = shipFactory(4, 4, false);
-        const player1Battleship = shipFactory(3, 3, false);
-        const compCruiser = shipFactory(4, 4);
-        const compBattleship = shipFactory(3, 3);
+        if(this.counter === 5){
+            clearDomAll();
+            this.gameLoop(player1, comp);
+        } else {
+            clearDomAll();
+            gameStartScreen(player1, player1.fleet[this.counter], comp);
+            makeStatusPlate(`Place your ${player1.fleet[this.counter].name}!`);
+        }
+        
+        
 
-        player1.placeShip(0, 1, "vertical", player1Cruiser)
-        player1.placeShip(5, 4, "horizontal", player1Battleship)
-        comp.placeShip(6, 4, "vertical", compCruiser);
-        comp.placeShip(2, 2, "horizontal", compBattleship);
+        // gameStartScreen(player1, playerCarrier);
+        // makeStatusPlate("Place your carrier!");
+        // gameStartScreen(player1, playerBattleship);
+        
+        
 
-        this.gameLoop(player1, comp);
+        // this.gameLoop(player1, comp);
 
     },
 
-    changeTurn(x) {
+    setTurn(x) {
         this.turn = x;
+    },
+
+    getTurn() {
+        return this.turn;
     }
 }
 

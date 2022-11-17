@@ -6,6 +6,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.hidden{
+    opacity: (0);
 }
 
 .boards{
@@ -23,6 +29,7 @@
     grid-template-rows: repeat(10, 1fr);
     border: 5px ridge rgb(169, 166, 166);
     position: relative;
+    z-index: 1;
 }
 
 .player-board {
@@ -38,11 +45,11 @@
     width: 100%;
 }
 
-.player-board > .grid-square {
+.player-board > * {
     border: 1px solid rgb(0, 221, 255);
 }
 
-.computer-board > .grid-square {
+.computer-board > * {
     border: 1px solid rgb(0, 255, 13);
 }
 
@@ -54,11 +61,12 @@
     background-color: rgb(169, 166, 166);
     color: black;
     height:40px;
+    width: fit-content;
     font-size: 2rem;
     font-family: 'Sono', sans-serif;
     position: absolute;
     top: -52px;
-    left: 40%;
+    left: 30%;
     border: 3px ridge rgb(169, 166, 166);
 }
 
@@ -68,4 +76,43 @@
 
 .ship-damage{
     background-color: rgba(255, 0, 0, 0.378)
+}
+
+.miss {
+    background-color: rgba(243, 245, 127, 0.301);
+}
+
+.game-start-screen{
+    height: 100vh;
+    width: 100vw;
+    /* background-image: radial-gradient(circle, rgb(180, 180, 180), rgb(46, 46, 46));  */
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-start-screen > .game-board {
+    background-image: radial-gradient(rgb(0, 88, 183), rgb(0, 47, 81));
+}
+
+.game-start-screen > .game-board > * {
+    border: 1px solid rgb(0, 221, 255);
+}
+
+.status-plate{
+    margin-top: 50px;
+    height: 100px;
+    width: 50%;
+    background-color: black;
+    border: 5px ridge rgb(169, 166, 166);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.message-div > h3 {
+    color: white;
+    font-size: 2rem;
+    font-family: 'Sono', sans-serif;
 }
