@@ -90,6 +90,11 @@ export const gameLoop = {
 
     getTurn() {
         return this.turn;
+    },
+
+    initStartScreen(){
+        // makeStartScreen()
+        gameLoop.initPlayers("human", "computer");
     }
 }
 

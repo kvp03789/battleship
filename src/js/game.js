@@ -144,10 +144,11 @@ export class Gameboard {
                 object.placeShip(x, y, orientation, ship)
             }else this.randomShipPlacement(object, ship);
         }
+        console.log(x, y)
     }
 
     checkValidPosition(x, y, orientation, ship) {
-        console.log(x, y, orientation, ship)
+        //console.log(x, y, orientation, ship)
         if(orientation === "horizontal"){
             if(this.gameBoard[x][y] && this.gameBoard[x + ship.size][y]){
                 return true
@@ -155,7 +156,7 @@ export class Gameboard {
                 return false
             }
         } else if(orientation === "vertical"){
-            if (this.gameBoard[x][y] && this.gameBoard[x + ship.size][y]){
+            if (this.gameBoard[x][y] && this.gameBoard[x][y + ship.size]){
                 return true
             }else {
                 return false
@@ -164,16 +165,15 @@ export class Gameboard {
     }
 
     checkOtherShips(x, y, orientation, ship) {
-            let result = true;
             for(let i = 0; i < ship.size; i++){
-                if(orientation === "horizontal"){
-                    if(this.gameBoard[x][y] == false || this.gameBoard[x + ship.size][y] == false){
+                if(orientation === "vertical"){
+                    if(this.gameBoard[x + i][y] !== "empty" || this.gameBoard[x][y] !== "empty"){
                         return false
                     }else {
                         return true
                     }
-                } else if(orientation === "vertical"){
-                    if (this.gameBoard[x][y] == false || this.gameBoard[x][y + ship.size] == false){
+                } else if(orientation === "horizontal"){
+                    if (this.gameBoard[x][y + i] !== "empty" || this.gameBoard[x][y] !== "empty"){
                         return false
                     }else {
                         return true

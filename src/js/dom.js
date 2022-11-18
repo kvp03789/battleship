@@ -106,6 +106,9 @@ export function gameStartScreen(playerObject, ship, computerObject) {
     xCounter++; 
     })
 
+
+    
+
     //ship placement event
     playerBoard.childNodes.forEach(i => {
         i.addEventListener("click", (e) => {
@@ -114,15 +117,15 @@ export function gameStartScreen(playerObject, ship, computerObject) {
             playerObject.placeShip(x, y, "vertical", ship)
             gameLoop.incrementCounter();
             gameLoop.placeShips(playerObject, computerObject)
-            console.log(playerObject.gameBoard)
-            console.log(gameLoop.counter)
+            // console.log(playerObject.gameBoard)
+            // console.log(gameLoop.counter)
         })
     })
 
     gameStartContainer.append(playerBoard)
     container.prepend(gameStartContainer);
     makeNamePlate(playerObject, playerBoard)
-    
+    addHoverEvent(ship);
 }
 
 export function makeStatusPlate(text) {
@@ -146,4 +149,31 @@ export function setStatusPlate(words){
     }
     const message = document.createElement("h3");
     message.innerHTML = `${words}`
+}
+
+export function makeStartScreen(){
+    makeStatusPlate("Enter your name")
+}
+
+function addHoverEvent(ship){
+    const playerBoard = document.querySelector(".game-board");
+    playerBoard.childNodes.forEach((i) => {
+        i.addEventListener("mouseover", (e) => {
+            // let valStart = parseInt(e.target.dataset.indexX)
+            // let valEnd = parseInt(e.target.dataset.indexX, 10) + ship.size
+            // //document.querySelector(`[data-indexX='${valStart}'`).classList.add("hover")
+            // document.querySelector(`[data-index-x='${valEnd}'`).classList.add("hover")
+            
+            // console.log(document.querySelector(`[data-index-x='${valEnd}'`))
+        })
+    })
+
+    playerBoard.childNodes.forEach((i) => {
+        i.addEventListener("mouseout", (e) => {
+            // let valStart = parseInt(e.target.dataset.indexX)
+            // let valEnd = parseInt(e.target.dataset.indexX, 10) + ship.size
+            // //document.querySelector(`[data-indexX='${valStart}'`).classList.remove("hover")
+            // document.querySelector(`[data-index-x='${valEnd}'`).classList.remove("hover")
+        })
+    })
 }
